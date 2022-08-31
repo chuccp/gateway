@@ -17,11 +17,7 @@ public interface EncryptInstance  {
 	
 	
 	public default Mono<String> modifyResponseBody(ServerWebExchange exchange,String text){
-		
-		System.out.println(exchange.getRequest().getId());
-		
-		
-		return Mono.just("================");
+		return Mono.just(text);
 	}
 	
 	
