@@ -22,7 +22,13 @@ public interface EncryptInstance  {
 	
 	
 	public default GatewayFilter responseEncryptGatewayFilter(RouteRule routeRule) {
-		return null;
+		return new GatewayFilter() {
+			
+			@Override
+			public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+				return chain.filter(exchange);
+			}
+		};
 	}
 	
 	
