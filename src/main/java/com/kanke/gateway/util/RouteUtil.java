@@ -79,7 +79,7 @@ public class RouteUtil {
 			if(routeRule.getRuleType()==RuleType.HOST) {
 				routeRule.setHosts(RouteUtil.hosts(routeMap, name));
 			}else {
-				routeRule.setHosts(RouteUtil.paths(routeMap, name));
+				routeRule.setPaths(RouteUtil.paths(routeMap, name));
 			}
 			routeRule.setUri("lb://"+name);
 			routeRule.setForward(forward(routeMap, name));
