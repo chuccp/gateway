@@ -21,7 +21,6 @@ import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.kanke.gateway.encrypt.EncryptInstance;
@@ -35,9 +34,9 @@ import com.kanke.gateway.util.RouteUtil;
 import com.kanke.gateway.util.ServiceInstanceListSupplierUtil;
 import com.kanke.gateway.util.UrlUtil;
 
+
+@ConfigurationProperties(prefix = "spring")
 @Configuration
-@PropertySource("classpath:route-application.properties")
-@ConfigurationProperties
 public class RouteConfig  {
 	
 	
