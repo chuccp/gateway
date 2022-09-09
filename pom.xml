@@ -79,7 +79,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>jsitv-gateway</finalName>
+		<finalName>gateway</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
