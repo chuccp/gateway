@@ -18,6 +18,9 @@ public class RouteRule {
 	private String[] forward;
 	
 	private Encrypt encrypt;
+	
+	
+	private RewritePath rewritePath;
 
 	public String getName() {
 		return name;
@@ -74,7 +77,12 @@ public class RouteRule {
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	
-	
-	
+
+	public RewritePath getRewritePath() {
+		return rewritePath;
+	}
+
+	public void setRewritePath(RewritePath rewritePath) {
+		this.rewritePath = rewritePath;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.kanke.gateway.entry.Encrypt;
+import com.kanke.gateway.entry.RewritePath;
 import com.kanke.gateway.entry.RouteRule;
 import com.kanke.gateway.type.RuleType;
 
@@ -58,6 +59,14 @@ public class RouteUtil {
 		return encrypt;
 	}
 	
+	private static RewritePath rewritePath(Map<String,String> routeMap,String name) {
+		RewritePath rewritePath = new RewritePath();
+		rewritePath.setRegex(routeMap.get("appender."+name+".rewritePath.regex"));
+		rewritePath.setReplacement(routeMap.get("appender."+name+".rewritePath.replacement"));
+		
+		return rewritePath;
+	}
+	
 	
 	private static String[] forward(Map<String,String> routeMap,String name) {
 		String forward = routeMap.get("appender."+name+".forwards");
@@ -84,6 +93,7 @@ public class RouteUtil {
 			routeRule.setUri("lb://"+name);
 			routeRule.setForward(forward(routeMap, name));
 			routeRule.setEncrypt(encrypt(routeMap,name));
+			routeRule.setRewritePath(rewritePath(routeMap, name));
 			roles.add(routeRule);
 		}
 		return roles;

@@ -99,10 +99,15 @@ public class RouteConfig  {
 					uriSpec =  r.path(routeRule.getPaths());
 				}
 				if(encryptInstance!=null) {
-					uriSpec = ((BooleanSpec) uriSpec).filters(
-							f->f.retry(3)
-							.filters(encryptInstance.responseEncryptGatewayFilter(routeRule))
-							.filters(encryptInstance.requestDecryptGatewayFilter(routeRule))
+					uriSpec = ((BooleanSpec) uriSpec).filters(f->    {
+						f = f.retry(3);
+						if(routeRule.getRewritePath()!=null&&StringUtils.isNotBlank(routeRule.getRewritePath().getRegex())&&StringUtils.isNotBlank(routeRule.getRewritePath().getReplacement())) {
+							f=f.rewritePath(routeRule.getRewritePath().getRegex(), routeRule.getRewritePath().getReplacement());
+						}
+						f = f.filters(encryptInstance.responseEncryptGatewayFilter(routeRule));
+						f = f.filters(encryptInstance.requestDecryptGatewayFilter(routeRule));
+						return f;
+					}
 							);
 				}
 				return uriSpec.uri(routeRule.getUri());

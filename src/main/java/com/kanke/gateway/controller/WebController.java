@@ -41,12 +41,17 @@ public class WebController {
 	
 	
 	@RequestMapping(path = "/{name}/getSwitchKey")
-	public Mono<String> getSwitchKey(@PathVariable("name") String name,@RequestParam("secret")String secret,ServerWebExchange serverWebExchange,@RequestParam("time")Long time) throws Exception {
+	public Mono<String> getSwitchKey(@PathVariable("name") String name,@RequestParam("secret")String secret,ServerWebExchange serverWebExchange,@RequestParam("time")Long time,@RequestParam(value = "SToken",required = false)String SToken) throws Exception {
 		Encrypt  encrypt  = routeConfig.getEncrypt(name);
 		if(encrypt==null||StringUtils.isBlank(encrypt.getKey())) {
 			return Mono.just("未配置密钥");
 		}
 		String token = serverWebExchange.getRequest().getHeaders().getFirst(GetAndPostEncryptInstance.x_token_id);
+		if(StringUtils.isBlank(token)) {
+			token = SToken;
+			if(StringUtils.isBlank(token)) {
+			return Mono.just("token is null");}
+		}
 		Date current = new Date();
 		byte[] privatekey = X25519.generatePrivateKey();
 		byte[] publickey = X25519.publicFromPrivate(privatekey);
@@ -62,7 +67,7 @@ public class WebController {
 		storeToken.setCha(Math.abs(storeToken.getLocalTime()-storeToken.getRemoteTime() ));
 		String SwitchKey = "SwitchKey_"+name;
 		String vkey = Hex.encode(publickey);
-		System.out.println(JsonUtil.ObjectToString(storeToken));
+//		System.out.println(JsonUtil.ObjectToString(storeToken));
 		return reactiveStringRedisTemplate.opsForHash().put(SwitchKey, token, JsonUtil.ObjectToString(storeToken)).thenReturn(vkey);
 		
 	}
